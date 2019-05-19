@@ -1,0 +1,13 @@
+[Unit]
+Description=Node Smart Home Server
+
+[Service]
+ExecStart=/var/www/smart-home/bin/www
+Restart=always
+User=nobody
+Group=nogroup
+Environment=PATH=/usr/bin:/usr/local/bin
+WorkingDirectory=/var/www/smart-home
+
+[Install]
+WantedBy=multi-user.target
