@@ -1,0 +1,47 @@
+{
+  "name": "smart-home",
+  "version": "1.0.0",
+  "description": "Smart Home Server",
+  "main": "./bin/www",
+  "repository": "https://github.com/Neffertum/SmartHome.git",
+  "author": "Antonina Gorokhova <tonya2709@mail.ru>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "watch": "nodemon ./bin/www",
+    "lint": "eslint --fix ./bin/www ."
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "dotenv": "^8.0.0",
+    "express": "~4.16.0",
+    "morgan": "~1.9.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.2",
+    "nodemon": "^1.19.0"
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "airbnb-base"
+    ],
+    "rules": {
+      "no-console": "off"
+    }
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js}": [
+      "yarn lint",
+      "git add"
+    ]
+  }
+}

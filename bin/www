@@ -1,0 +1,54 @@
+#!/usr/bin/env node
+require('dotenv').config();
+
+const app = require('../app');
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  const addr = this.address();
+  const bind = typeof addr === 'string'
+    ? `Pipe ${addr}`
+    : `Port ${app.get('port')}`;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(`${bind} requires elevated privileges`);
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(`${bind} is already in use`);
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  const addr = this.address();
+  const bind = typeof addr === 'string'
+    ? `pipe ${addr}`
+    : `port ${addr.port}`;
+  console.log(`Listening on ${bind}`);
+}
+
+/**
+ * Start Express server.
+ */
+
+const server = app.listen(app.get('port'));
+
+server.on('error', onError.bind(server));
+server.on('listening', onListening.bind(server));
