@@ -1,0 +1,78 @@
+<html>
+  <head>
+    <title>Умный дом</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/stylesheets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  </head>
+  <body>
+    <div class="background"></div>
+    <div class="content">
+      <div class="header">Умный дом</div>
+      <div class="sub-header">Мои устройства</div>
+      <div class="devices">
+        {{#each devices as |device|}}
+          {{#ifCond device.type 'alarm-clock' }}
+            <div class="device shadow alarm-clock-device">
+              <div class="img alarm-clock-img"></div>
+              <div class="device-description">
+                <div class="device-info">{{{device.name}}}</div>
+                {{#each device.state as |info|}}
+                  <div class="device-info">{{{info.name}}}: {{{info.value}}}</div>
+                {{/each}}
+                {{#each device.methods as |method|}}
+                  {{#each method.arguments as |argument|}}
+                    <input type="text" class="timepicker" id="{{device.id}}-{{method.id}}-{{{argument.name}}}">
+                  {{/each}}
+                  <div class="device-info">
+                    <a onclick="alarmClock.{{method.id}}('{{device.id}}')" class="btn">{{{method.name}}}</a>
+                  </div>
+                {{/each}}
+              </div>
+            </div>
+          {{else}}
+            <div class="device shadow {{device.type}}-device">
+              <div class="img {{device.type}}-img"></div>
+              <div class="device-description">
+                <div class="device-info">{{{device.name}}}</div>
+                {{#each device.state as |info|}}
+                  <div class="device-info">{{{info.name}}}: {{{info.value}}}</div>
+                {{/each}}
+                {{#each device.methods as |method|}}
+                  <div class="device-info">
+                    <a href="/action/{{device.id}}/{{method.id}}" class="btn">{{{method.name}}}</a>
+                  </div>
+                {{/each}}
+              </div>
+            </div>
+          {{/ifCond}}
+        {{else}}
+          <div class="empty">Список устройств пуст</div>
+        {{/each}}
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.timepicker');
+        var instances = M.Timepicker.init(elems, { twelveHour: false });
+      });
+
+      var alarmClock = {
+        turnOn: function turnOn(device) {
+          var input = document.getElementById(device + '-turnOn-Время');
+          var time = input.value;
+          if (time) {
+            window.location = '/custom-action/' + device + '/turnOn?time=' + time;
+          }
+        },
+
+        turnOff: function turnOff(device) {
+          window.location = '/action/' + device + '/turnOff';
+        },
+      };
+    </script>
+  </body>
+</html>

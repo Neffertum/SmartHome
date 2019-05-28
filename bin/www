@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 require('dotenv').config();
 
-const app = require('../app');
+const webApp = require('../web-app');
 
 /**
  * Event listener for HTTP server "error" event.
@@ -15,7 +15,7 @@ function onError(error) {
   const addr = this.address();
   const bind = typeof addr === 'string'
     ? `Pipe ${addr}`
-    : `Port ${app.get('port')}`;
+    : `Port ${webApp.get('port')}`;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -48,7 +48,7 @@ function onListening() {
  * Start Express server.
  */
 
-const server = app.listen(app.get('port'));
+const server = webApp.listen(webApp.get('port'));
 
 server.on('error', onError.bind(server));
 server.on('listening', onListening.bind(server));

@@ -20,9 +20,17 @@ function normalizePort(val) {
 
 
 /**
-* Get port from environment and store in Express.
+* Get environment variables.
 */
 
-const port = normalizePort(process.env.PORT || '3000');
+const {
+  PORT,
+  MQTT_CONNECTION_URL,
+  MQTT_CONNECTION_TIMEOUT,
+} = process.env;
 
-module.exports = { port };
+module.exports = {
+  MQTT_CONNECTION_URL,
+  PORT: normalizePort(PORT || '3000'),
+  MQTT_CONNECTION_TIMEOUT: +MQTT_CONNECTION_TIMEOUT || 10000,
+};

@@ -42,3 +42,4 @@ echo -e "\033[1;4;32m[SmartHome]\033[0m Installation Complete!"
 
 echo -e "\033[1;4;32m[SmartHome]\033[0m Starting Service"
 sudo systemctl start $SRV_NAME
+cd $CURRENT_DIR
